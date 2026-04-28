@@ -4,16 +4,19 @@ short: Overview
 weight: 1
 ---
 
-{{< warning >}}
-The containerd documentation is currently under construction. Check back soon for updates!
-{{< /warning >}}
+## Overview
 
 Welcome to the containerd documentation! This document contains some basic project-level information about containerd.
 
-If you'd like to get started running containerd locally on your machine, see the [Getting started](https://github.com/containerd/containerd/blob/main/docs/getting-started.md) guide.
+If you'd like to get started running containerd locally on your machine, see the [getting started](#getting-started) guide.
 
 ## Repositories
 
-The containerd project is encapsulated in a variety of [GitHub](https://github.com) repositories:
+The containerd project is encapsulated in a variety of GitHub repositories; see https://github.com/containerd .
 
-{{< repos >}}
+## Getting Started
+
+- [main](main/getting-started/)
+- [2.2.x](2.2/getting-started/)
+- [2.1.x](2.1/getting-started/)
+- [1.7.x](1.7/getting-started/)
