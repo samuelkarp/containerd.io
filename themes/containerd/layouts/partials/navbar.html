@@ -33,19 +33,18 @@
           Downloads
         </a>
 
-        <div class="navbar-item is-hoverable has-dropdown has-text-weight-bold" href="/docs">
-          <a class="navbar-link">
+        <div class="navbar-item is-hoverable has-dropdown has-text-weight-bold">
+          <a class="navbar-link" href="/docs/{{ .Site.Params.versions.latestdir }}/">
             Docs
           </a>
-
-          <div class="navbar-dropdown is-right">
-            {{- range $docs }}
-            <a class="navbar-item" href="{{ .RelPermalink }}">
-              {{ .Title }}
+          <div class="navbar-dropdown">
+            {{- range .Site.Params.versions.all }}
+            <a class="navbar-item" href="/docs/{{ . }}/">
+              {{ . }}
             </a>
             {{- end }}
           </div>
-        </div> <!-- .navbar-item -->
+        </div>
 
         <div class="navbar-item is-hoverable has-dropdown has-text-weight-bold">
           <div class="navbar-link">
