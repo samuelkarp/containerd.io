@@ -33,7 +33,9 @@ features = [
 ]
 
 [params.versions]
-latest = "1.6.8"
+latest = "2.2.0"
+latestdir = "2.2"
+all = ["2.2", "2.1", "1.7", "main"]
 
 [[params.fonts]]
 name = "Lato"
@@ -42,3 +44,7 @@ sizes = [300,400,600,700]
 [[params.fonts]]
 name = "Fira Mono"
 sizes = [300,400,600,700]
+
+[caches]
+  [caches.getjson]
+    maxAge = "24h"
