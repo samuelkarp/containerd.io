@@ -1,5 +1,5 @@
 {{ define "title" }}
-containerd docs &ndash; {{ .Title }}
+containerd docs &ndash; {{ partial "docs/title.html" . }}
 {{ end }}
 
 {{ define "main" }}
@@ -7,28 +7,69 @@ containerd docs &ndash; {{ .Title }}
 {{- $pages   := where .Site.Pages "Section" $section }}
 
 {{ partial "hero.html" . }}
-{{ partial "docs/tabs.html" (dict "pages" $pages "currentUrl" .RelPermalink) }}
+{{ $Content := .Content }}
 
 <article class="is-{{ $section }}-article">
-  <div class="container">
+  <div class="container mt-5">
     <div class="columns">
-      <div class="column is-three-quarters is-full-mobile">
+      {{ partial "docs/sidebar.html" . }}
+
+      <div class="column is-7 is-full-mobile">
         <div class="content">
           <div class="is-hidden-desktop">
             {{ partial "docs/dropdown.html" . }}
           </div>
     
           <section class="is-inner-content">
-            {{ .Content }}
+            {{- $parts := split (trim .RelPermalink "/") "/" }}
+            {{- $xVersion := "" }}
+            {{- if gt (len $parts) 1 }}
+              {{- $xVersion = index $parts 1 }}
+            {{- end }}
+
+            {{- if ne $xVersion "" }}
+              {{- $branch := cond (eq $xVersion "main") "main" (printf "release/%s" $xVersion) }}
+              {{- $relPath := strings.TrimPrefix (printf "docs/%s/" $xVersion) .File.Path }}
+
+              {{- $isGenerated := false }}
+              {{- if and (hasSuffix .File.Path "_index.md") (ne $relPath "_index.md") }}
+                {{- $isGenerated = true }}
+              {{- end }}
+
+              {{- if not $isGenerated }}
+                {{- $sourcePath := cond (eq $relPath "_index.md") "README.md" (printf "docs/%s" $relPath) }}
+                {{- $editUrl := printf "https://github.com/containerd/containerd/edit/%s/%s" $branch $sourcePath }}
+
+                <div class="has-text-right mb-3">
+                  <a href="{{ $editUrl }}" target="_blank" class="is-size-6">
+                    <span class="icon is-small"><i class="fas fa-edit"></i></span> Edit this page
+                  </a>
+                </div>
+              {{- end }}
+            {{- end }}
+
+            {{- $content := .Content }}
+            {{ if .Content }}
+              {{ $content | safeHTML }}
+            {{ else }}
+              <h2>Navigation</h2>
+              <ul>
+              {{ range .Pages }}
+                {{- if not (in site.Data.tree.hidden (cond (eq .Title "") .File.BaseFileName .Title)) -}}
+                <li><a href="{{ .RelPermalink }}">{{ partial "docs/title.html" . }}</a></li>
+                {{- end -}}
+              {{ end }}
+              </ul>
+            {{ end }}
           </section>
         </div>
       </div>
 
       <div class="column is-hidden-touch">
-        {{- if .TableOfContents }}
+        {{- if and .Content .TableOfContents }}
         <aside class="is-toc-container">
-          <p class="is-size-4 is-toc-title">
-            Table of contents
+          <p class="is-toc-title">
+            On this page
           </p>
 
           <div id="toc">
